@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#173d32" />
+  <meta name="description" content="FEM-VOYAGE — ruang aman untuk menjelajahi Indonesia bersama komunitas perempuan." />
+  <title>FEM-VOYAGE — Travel Together, Feel Safer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root { --forest:#173d32; --forest-2:#245342; --cream:#f7f5ef; --sand:#e9e4d8; --orange:#d88659; --ink:#202a25; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--cream); }
+    h1,h2,h3,.serif { font-family:'Playfair Display',serif; }
+    .hero-bg { background:linear-gradient(90deg,rgba(12,37,30,.84) 0%,rgba(12,37,30,.55) 47%,rgba(12,37,30,.08) 100%),url('https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=2000&q=85') center/cover; }
+    .soft-shadow { box-shadow:0 18px 50px rgba(32,42,37,.09); }
+    .trip-card { transition:transform .25s ease, box-shadow .25s ease; }
+    .trip-card:hover { transform:translateY(-5px); box-shadow:0 20px 45px rgba(32,42,37,.14); }
+    .btn-primary { background:var(--forest); color:#fff; transition:.2s; }
+    .btn-primary:hover { background:var(--forest-2); transform:translateY(-1px); }
+    .btn-outline { border:1px solid #c9cec7; transition:.2s; }
+    .btn-outline:hover { border-color:var(--forest); background:#edf1ec; }
+    .pill { border:1px solid #d9ded7; background:#fff; }
+    .pill.active { color:white; background:var(--forest); border-color:var(--forest); }
+    .modal-backdrop { background:rgba(10,25,20,.62); backdrop-filter:blur(5px); }
+    .modal-panel { animation:pop .22s ease-out; }
+    @keyframes pop { from { opacity:0; transform:translateY(12px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+    .toast { animation:toastIn .25s ease-out; }
+    @keyframes toastIn { from {opacity:0;transform:translateY(12px)} to {opacity:1;transform:translateY(0)} }
+    .map-grid { background-color:#e6e9e1; background-image:linear-gradient(rgba(255,255,255,.65) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.65) 1px,transparent 1px); background-size:28px 28px; }
+    .step-dot { width:28px;height:28px;display:grid;place-items:center;border-radius:999px;background:#e9eee8;color:var(--forest);font-size:12px;font-weight:700; }
+    .step-dot.done { background:var(--forest);color:white; }
+    input:focus,select:focus { outline:2px solid rgba(36,83,66,.23);border-color:var(--forest)!important; }
+    .hide-scroll::-webkit-scrollbar { display:none; }
+    @media(max-width:640px){ .hero-bg{background-position:58% center;} }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="sticky top-0 z-40 bg-[#f7f5ef]/95 backdrop-blur border-b border-[#e8e5dc]">
+    <nav class="max-w-7xl mx-auto px-5 lg:px-8 h-[76px] flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-3" aria-label="FEM-VOYAGE beranda">
+        <span class="w-10 h-10 rounded-2xl bg-[#173d32] text-white grid place-items-center"><i class="fa-solid fa-compass text-lg"></i></span>
+        <span class="leading-tight"><span class="block tracking-[.16em] text-[13px] font-bold text-[#173d32]">FEM-VOYAGE</span><span class="block text-[10px] tracking-[.12em] text-[#788078]">TRAVEL WITH TRUST</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-[#526057]">
+        <a class="hover:text-[#173d32]" href="#trips">Jelajahi Trip</a>
+        <a class="hover:text-[#173d32]" href="#safety">Keamanan</a>
+        <a class="hover:text-[#173d32]" href="#about">Tentang Kami</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="loginNav" class="hidden sm:inline-flex text-sm font-semibold px-4 py-2.5 hover:text-[#173d32]">Masuk</button>
+        <button id="joinNav" class="btn-primary rounded-full px-5 py-3 text-sm font-semibold">Gabung Sekarang <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></button>
+        <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-full border border-[#d9ded7]" aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+    <div id="mobileMenu" class="hidden md:hidden px-5 pb-4 space-y-3 text-sm font-semibold"><a class="block" href="#trips">Jelajahi Trip</a><a class="block" href="#safety">Keamanan</a><a class="block" href="#about">Tentang Kami</a></div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="hero-bg min-h-[590px] lg:min-h-[650px] flex items-center text-white">
+      <div class="max-w-7xl w-full mx-auto px-5 lg:px-8 py-20">
+        <div class="max-w-[650px]">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs tracking-wide mb-7"><i class="fa-solid fa-heart text-[#f0b28d]"></i> Ruang perjalanan yang dibangun bersama perempuan</div>
+          <h1 class="text-5xl sm:text-6xl lg:text-[74px] leading-[1.06] font-semibold mb-6">Jelajahi dunia,<br/><span class="italic text-[#f0bd9b]">dengan rasa aman.</span></h1>
+          <p class="text-white/85 text-base sm:text-lg leading-8 max-w-[540px] mb-9">Temukan open trip khusus perempuan, bertemu teman perjalanan baru, dan dukung UMKM wisata perempuan di berbagai penjuru Indonesia.</p>
+          <div class="flex flex-wrap gap-3"><a href="#trips" class="bg-[#f3eee3] text-[#173d32] rounded-full px-6 py-3.5 font-bold text-sm hover:bg-white">Temukan Perjalanan <i class="fa-solid fa-arrow-right ml-2"></i></a><button id="heroJoin" class="border border-white/50 rounded-full px-6 py-3.5 font-semibold text-sm hover:bg-white/10">Kenali Komunitas</button></div>
+          <div class="flex items-center gap-8 sm:gap-12 mt-14 pt-7 border-t border-white/25 max-w-[520px]">
+            <div><p class="text-2xl sm:text-3xl serif">100%</p><p class="text-xs text-white/70 mt-1">Berbasis komunitas</p></div>
+            <div><p class="text-2xl sm:text-3xl serif">Lokal</p><p class="text-xs text-white/70 mt-1">Dukung UMKM perempuan</p></div>
+            <div><p class="text-2xl sm:text-3xl serif">Terarah</p><p class="text-xs text-white/70 mt-1">Fitur keamanan trip</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search panel -->
+    <section class="max-w-6xl mx-auto px-5 lg:px-8 -mt-10 relative z-10">
+      <div class="bg-white rounded-3xl soft-shadow p-5 sm:p-7">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5"><div><p class="text-xs tracking-[.16em] font-bold text-[#b87955] uppercase">Mulai petualanganmu</p><h2 class="text-2xl serif text-[#173d32] mt-1">Mau ke mana kali ini?</h2></div><span class="text-xs text-[#7e8880]"><i class="fa-solid fa-shield-heart mr-1 text-[#b87955]"></i> Trip dikurasi oleh mitra komunitas</span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label class="rounded-2xl bg-[#f7f7f3] p-3.5 flex items-center gap-3"><i class="fa-solid fa-location-dot text-[#b87955] text-lg ml-1"></i><span class="flex-1"><span class="block text-[10px] text-[#8a938b] font-bold uppercase tracking-wider">Destinasi</span><select id="destinationFilter" class="bg-transparent w-full text-sm font-semibold mt-1 outline-none"><option value="all">Semua destinasi</option><option value="Jawa Timur">Jawa Timur</option><option value="Bali">Bali</option><option value="Nusa Tenggara">Nusa Tenggara</option></select></span></label>
+          <label class="rounded-2xl bg-[#f7f7f3] p-3.5 flex items-center gap-3"><i class="fa-regular fa-calendar text-[#b87955] text-lg ml-1"></i><span class="flex-1"><span class="block text-[10px] text-[#8a938b] font-bold uppercase tracking-wider">Waktu berangkat</span><select id="dateFilter" class="bg-transparent w-full text-sm font-semibold mt-1 outline-none"><option value="all">Kapan saja</option><option value="soon">Bulan ini</option><option value="next">Bulan depan</option></select></span></label>
+          <button id="searchTrips" class="btn-primary rounded-2xl py-4 px-5 text-sm font-bold">Cari Perjalanan <i class="fa-solid fa-arrow-right ml-2"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trip cards -->
+    <section id="trips" class="max-w-7xl mx-auto px-5 lg:px-8 py-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-9">
+        <div><p class="text-xs tracking-[.18em] font-bold text-[#b87955] uppercase mb-3">Pilihan komunitas</p><h2 class="text-4xl sm:text-5xl serif text-[#173d32]">Perjalanan yang <span class="italic">berarti.</span></h2><p class="text-sm text-[#758078] mt-3">Jelajahi alam, budaya, dan cerita baru bersama sesama perempuan.</p></div>
+        <div class="flex flex-wrap gap-2"><button class="pill active rounded-full px-4 py-2 text-xs font-semibold filter-btn" data-filter="all">Semua</button><button class="pill rounded-full px-4 py-2 text-xs font-semibold filter-btn" data-filter="nature">Alam</button><button class="pill rounded-full px-4 py-2 text-xs font-semibold filter-btn" data-filter="culture">Budaya</button><button class="pill rounded-full px-4 py-2 text-xs font-semibold filter-btn" data-filter="relax">Santai</button></div>
+      </div>
+      <div id="tripGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="trip-card bg-white rounded-[26px] overflow-hidden border border-[#ecebe4]" data-category="nature" data-region="Jawa Timur" data-date="soon">
+          <div class="relative h-[245px]"><img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80" alt="Gunung dan langit malam"/><span class="absolute top-4 left-4 bg-white/90 text-[#173d32] rounded-full px-3 py-1.5 text-[10px] font-bold tracking-wider">NATURE ESCAPE</span><button class="favorite absolute top-4 right-4 bg-white/90 w-9 h-9 rounded-full text-[#6d7770]" aria-label="Simpan trip"><i class="fa-regular fa-heart"></i></button></div>
+          <div class="p-5"><div class="flex items-center justify-between text-xs text-[#8a938b]"><span><i class="fa-solid fa-location-dot mr-1 text-[#c5815b]"></i> Bromo, Jawa Timur</span><span><i class="fa-regular fa-clock mr-1"></i> 2 hari 1 malam</span></div><h3 class="text-2xl serif text-[#173d32] mt-3">Sunrise & Sisterhood</h3><p class="text-xs text-[#7c867e] mt-2 leading-5">Nikmati golden sunrise dan lanskap pasir bersama local host perempuan.</p><div class="flex items-center justify-between border-t border-[#efeee8] mt-5 pt-4"><div><p class="text-[10px] text-[#929a93]">Mulai dari</p><p class="font-bold text-[#173d32]">Rp 850.000 <span class="text-[10px] font-normal text-[#929a93]">/ orang</span></p></div><button class="detail-btn text-xs font-bold text-[#b87955] hover:text-[#173d32]" data-trip="Sunrise & Sisterhood">Lihat trip <i class="fa-solid fa-arrow-right ml-1"></i></button></div></div>
+        </article>
+        <article class="trip-card bg-white rounded-[26px] overflow-hidden border border-[#ecebe4]" data-category="relax" data-region="Bali" data-date="next">
+          <div class="relative h-[245px]"><img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80" alt="Pemandangan tropis Bali"/><span class="absolute top-4 left-4 bg-white/90 text-[#173d32] rounded-full px-3 py-1.5 text-[10px] font-bold tracking-wider">SLOW LIVING</span><button class="favorite absolute top-4 right-4 bg-white/90 w-9 h-9 rounded-full text-[#6d7770]" aria-label="Simpan trip"><i class="fa-regular fa-heart"></i></button></div>
+          <div class="p-5"><div class="flex items-center justify-between text-xs text-[#8a938b]"><span><i class="fa-solid fa-location-dot mr-1 text-[#c5815b]"></i> Ubud, Bali</span><span><i class="fa-regular fa-clock mr-1"></i> 3 hari 2 malam</span></div><h3 class="text-2xl serif text-[#173d32] mt-3">Ubud Bloom Retreat</h3><p class="text-xs text-[#7c867e] mt-2 leading-5">Recharge dengan wellness, workshop kreatif, dan suasana alam Ubud.</p><div class="flex items-center justify-between border-t border-[#efeee8] mt-5 pt-4"><div><p class="text-[10px] text-[#929a93]">Mulai dari</p><p class="font-bold text-[#173d32]">Rp 1.450.000 <span class="text-[10px] font-normal text-[#929a93]">/ orang</span></p></div><button class="detail-btn text-xs font-bold text-[#b87955] hover:text-[#173d32]" data-trip="Ubud Bloom Retreat">Lihat trip <i class="fa-solid fa-arrow-right ml-1"></i></button></div></div>
+        </article>
+        <article class="trip-card bg-white rounded-[26px] overflow-hidden border border-[#ecebe4]" data-category="culture" data-region="Nusa Tenggara" data-date="next">
+          <div class="relative h-[245px]"><img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80" alt="Pulau tropis dan laut biru"/><span class="absolute top-4 left-4 bg-white/90 text-[#173d32] rounded-full px-3 py-1.5 text-[10px] font-bold tracking-wider">ISLAND STORY</span><button class="favorite absolute top-4 right-4 bg-white/90 w-9 h-9 rounded-full text-[#6d7770]" aria-label="Simpan trip"><i class="fa-regular fa-heart"></i></button></div>
+          <div class="p-5"><div class="flex items-center justify-between text-xs text-[#8a938b]"><span><i class="fa-solid fa-location-dot mr-1 text-[#c5815b]"></i> Labuan Bajo, NTT</span><span><i class="fa-regular fa-clock mr-1"></i> 3 hari 2 malam</span></div><h3 class="text-2xl serif text-[#173d32] mt-3">Islands & Stories</h3><p class="text-xs text-[#7c867e] mt-2 leading-5">Island hopping, menikmati laut, dan mengenal cerita warga setempat.</p><div class="flex items-center justify-between border-t border-[#efeee8] mt-5 pt-4"><div><p class="text-[10px] text-[#929a93]">Mulai dari</p><p class="font-bold text-[#173d32]">Rp 2.250.000 <span class="text-[10px] font-normal text-[#929a93]">/ orang</span></p></div><button class="detail-btn text-xs font-bold text-[#b87955] hover:text-[#173d32]" data-trip="Islands & Stories">Lihat trip <i class="fa-solid fa-arrow-right ml-1"></i></button></div></div>
+        </article>
+      </div>
+      <p id="noTrips" class="hidden text-center text-sm text-[#7c867e] py-12">Belum ada trip yang cocok dengan filter ini.</p>
+      <div class="text-center mt-10"><button id="allTrips" class="btn-outline rounded-full px-6 py-3 text-sm font-semibold">Jelajahi semua trip <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
+    </section>
+
+    <!-- Safety -->
+    <section id="safety" class="bg-[#eaece5] py-24">
+      <div class="max-w-7xl mx-auto px-5 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-14 items-center">
+          <div class="relative"><img class="rounded-[30px] w-full h-[450px] object-cover" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85" alt="Teman-teman menikmati perjalanan bersama"/><div class="absolute -bottom-6 -right-3 sm:right-5 bg-white rounded-2xl p-5 soft-shadow max-w-[245px]"><div class="w-10 h-10 rounded-xl bg-[#e8f0e9] text-[#245342] grid place-items-center mb-3"><i class="fa-solid fa-user-shield text-lg"></i></div><p class="font-bold text-sm text-[#173d32]">Kamu tetap pegang kendali.</p><p class="text-xs text-[#778078] leading-5 mt-1">Berbagi lokasi bersifat sukarela dan dapat dihentikan kapan saja.</p></div></div>
+          <div class="lg:pl-5"><p class="text-xs tracking-[.18em] font-bold text-[#b87955] uppercase mb-3">Rasa aman adalah prioritas</p><h2 class="text-4xl sm:text-5xl serif text-[#173d32] leading-tight">Pergi bersama,<br/><span class="italic">saling menjaga.</span></h2><p class="text-sm leading-7 text-[#657168] mt-5 max-w-lg">FEM-VOYAGE dirancang untuk membangun perjalanan yang lebih terpercaya melalui verifikasi komunitas, informasi trip yang transparan, dan fitur keselamatan yang memberi kendali kepada pengguna.</p>
+            <div class="space-y-5 mt-8">
+              <div class="flex gap-4"><span class="w-11 h-11 rounded-2xl bg-white text-[#b87955] grid place-items-center shrink-0"><i class="fa-solid fa-id-card"></i></span><div><h3 class="font-bold text-sm text-[#173d32]">Verifikasi anggota</h3><p class="text-xs text-[#758078] mt-1 leading-5">Pendaftaran dengan pernyataan identitas dan peninjauan admin komunitas.</p></div></div>
+              <div class="flex gap-4"><span class="w-11 h-11 rounded-2xl bg-white text-[#b87955] grid place-items-center shrink-0"><i class="fa-solid fa-location-crosshairs"></i></span><div><h3 class="font-bold text-sm text-[#173d32]">Berbagi lokasi secara sukarela</h3><p class="text-xs text-[#758078] mt-1 leading-5">Aktifkan GPS saat trip dan bagikan posisi kepada orang tepercaya.</p></div></div>
+              <div class="flex gap-4"><span class="w-11 h-11 rounded-2xl bg-white text-[#b87955] grid place-items-center shrink-0"><i class="fa-solid fa-receipt"></i></span><div><h3 class="font-bold text-sm text-[#173d32]">Informasi dan transaksi transparan</h3><p class="text-xs text-[#758078] mt-1 leading-5">Rincian layanan, harga, dan ulasan ditampilkan agar keputusan lebih jelas.</p></div></div>
+            </div>
+            <button id="openSafety" class="btn-primary rounded-full px-6 py-3.5 text-sm font-semibold mt-9">Coba fitur keamanan <i class="fa-solid fa-arrow-right ml-2"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tracking demo -->
+    <section id="tracking" class="max-w-7xl mx-auto px-5 lg:px-8 py-24">
+      <div class="text-center max-w-2xl mx-auto mb-10"><p class="text-xs tracking-[.18em] font-bold text-[#b87955] uppercase mb-3">Trip safety preview</p><h2 class="text-4xl sm:text-5xl serif text-[#173d32]">Lokasi dalam kendalimu.</h2><p class="text-sm text-[#78827a] mt-4 leading-6">Coba simulasi fitur berbagi lokasi. Browser hanya akan meminta izin GPS setelah kamu menekan tombol mulai.</p></div>
+      <div class="max-w-5xl mx-auto grid lg:grid-cols-[1.2fr_.8fr] rounded-[30px] overflow-hidden bg-white soft-shadow">
+        <div class="map-grid min-h-[330px] relative flex items-center justify-center overflow-hidden">
+          <svg class="absolute inset-0 w-full h-full opacity-70" viewBox="0 0 600 380" preserveAspectRatio="none" aria-hidden="true"><path d="M-10 275 C100 235 120 300 210 220 S350 170 410 210 S510 100 620 130" fill="none" stroke="#9db6a2" stroke-width="5" stroke-linecap="round" stroke-dasharray="10 11"/><path d="M40 40 C120 100 155 60 225 105 S350 260 420 275 S510 310 600 280" fill="none" stroke="#fff" stroke-width="9"/></svg>
+          <div class="relative z-10 text-center"><div id="mapPin" class="mx-auto w-16 h-16 rounded-full bg-[#173d32] text-white grid place-items-center text-2xl shadow-xl ring-8 ring-white/50"><i class="fa-solid fa-location-dot"></i></div><p id="mapStatus" class="mt-4 bg-white/90 rounded-full px-4 py-2 text-xs font-bold text-[#173d32] shadow">Lokasi belum dibagikan</p></div>
+          <div class="absolute bottom-4 left-4 bg-white/85 rounded-xl px-3 py-2 text-[10px] text-[#738076]"><i class="fa-solid fa-map mr-1"></i> Peta ilustrasi · bukan peta navigasi</div>
+        </div>
+        <div class="p-7 sm:p-9 flex flex-col justify-center"><div class="flex items-center justify-between"><h3 class="text-2xl serif text-[#173d32]">Trip Safety</h3><span id="trackingBadge" class="text-[10px] font-bold bg-[#f0f1ec] text-[#78827a] rounded-full px-3 py-1.5">NONAKTIF</span></div><p class="text-xs text-[#78827a] mt-2 leading-5">Bagikan titik lokasimu kepada teman atau keluarga saat perjalanan berlangsung.</p><div class="rounded-2xl bg-[#f7f7f3] p-4 mt-6"><p class="text-[10px] uppercase tracking-wider text-[#929a93] font-bold">Koordinat perangkat</p><p id="coordinates" class="font-semibold text-sm text-[#173d32] mt-2">Belum tersedia</p><p id="locationHint" class="text-[10px] text-[#8a938b] mt-1">Izin lokasi belum diminta.</p></div><div class="flex gap-2 mt-5"><button id="startTracking" class="btn-primary flex-1 rounded-xl py-3 text-xs font-bold"><i class="fa-solid fa-location-crosshairs mr-2"></i>Mulai berbagi</button><button id="stopTracking" class="btn-outline rounded-xl px-4 py-3 text-xs font-bold" disabled>Stop</button></div><button id="shareLocation" class="w-full border border-[#d9ded7] rounded-xl py-3 mt-3 text-xs font-bold text-[#526057] hover:bg-[#f7f7f3]" disabled><i class="fa-solid fa-share-nodes mr-2"></i>Bagikan posisi</button><p class="text-[10px] text-[#9aa199] leading-4 mt-4"><i class="fa-solid fa-lock mr-1"></i> Demo front-end: koordinat hanya tampil di browser ini. Belum ada penyimpanan server atau pembagian lokasi real-time.</p></div>
+      </div>
+    </section>
+
+    <!-- Cooperative / about -->
+    <section id="about" class="bg-[#173d32] text-white py-20">
+      <div class="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+        <div><p class="text-xs tracking-[.18em] text-[#e6ad88] font-bold uppercase mb-3">Lebih dari sekadar perjalanan</p><h2 class="text-4xl sm:text-5xl serif leading-tight">Perempuan berdaya,<br/><span class="italic text-[#edbb9c]">pariwisata berjaya.</span></h2><p class="text-sm leading-7 text-white/70 mt-5 max-w-xl">FEM-VOYAGE membawa semangat koperasi pariwisata digital: menghubungkan wisatawan dengan UMKM dan pekerja wisata perempuan, serta mendorong perempuan berperan sebagai pemilik usaha dan pengambil keputusan.</p></div>
+        <div class="grid grid-cols-2 gap-3"><div class="border border-white/15 rounded-2xl p-5 bg-white/5"><i class="fa-solid fa-store text-[#edbb9c] text-xl"></i><h3 class="serif text-2xl mt-5">UMKM</h3><p class="text-xs leading-5 text-white/60 mt-2">Membuka akses pasar bagi penyedia trip lokal perempuan.</p></div><div class="border border-white/15 rounded-2xl p-5 bg-white/5"><i class="fa-solid fa-people-group text-[#edbb9c] text-xl"></i><h3 class="serif text-2xl mt-5">Komunitas</h3><p class="text-xs leading-5 text-white/60 mt-2">Membangun pengalaman wisata yang saling mendukung.</p></div><div class="border border-white/15 rounded-2xl p-5 bg-white/5"><i class="fa-solid fa-handshake-angle text-[#edbb9c] text-xl"></i><h3 class="serif text-2xl mt-5">Koperasi</h3><p class="text-xs leading-5 text-white/60 mt-2">Mendorong tata kelola dan pembagian hasil yang transparan.</p></div><div class="border border-white/15 rounded-2xl p-5 bg-white/5"><i class="fa-solid fa-mobile-screen-button text-[#edbb9c] text-xl"></i><h3 class="serif text-2xl mt-5">Teknologi PWA</h3><p class="text-xs leading-5 text-white/60 mt-2">Akses ringan melalui browser tanpa instalasi aplikasi.</p></div></div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-5 lg:px-8 py-16"><div class="rounded-[28px] bg-[#eee8dc] px-7 py-10 sm:px-12 sm:py-12 flex flex-col md:flex-row items-center justify-between gap-8"><div><p class="text-xs tracking-[.16em] uppercase font-bold text-[#b87955]">Your next chapter starts here</p><h2 class="text-3xl sm:text-4xl serif text-[#173d32] mt-2">Siap membuat cerita baru?</h2><p class="text-sm text-[#778078] mt-2">Temukan perjalanan yang terasa lebih dekat dan bermakna.</p></div><button id="ctaJoin" class="btn-primary rounded-full px-7 py-4 text-sm font-bold whitespace-nowrap">Gabung komunitas <i class="fa-solid fa-arrow-right ml-2"></i></button></div></section>
+  </main>
+
+  <footer class="border-t border-[#e8e5dc] bg-[#f7f5ef]"><div class="max-w-7xl mx-auto px-5 lg:px-8 py-8 flex flex-col sm:flex-row justify-between gap-4 text-xs text-[#849087]"><div class="flex items-center gap-2 text-[#173d32] font-bold tracking-[.14em]"><i class="fa-solid fa-compass"></i> FEM-VOYAGE</div><p>© 2026 FEM-VOYAGE · Mockup MVP untuk demonstrasi.</p><p>Travel with trust, grow together.</p></div></footer>
+
+  <!-- Registration / verification modal -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 modal-backdrop p-4 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="modal-panel bg-white w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-[28px] p-6 sm:p-8 relative">
+      <button class="close-modal absolute top-5 right-5 w-9 h-9 rounded-full bg-[#f1f2ed] text-[#526057]" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+      <div class="w-12 h-12 rounded-2xl bg-[#eaf0e9] text-[#173d32] grid place-items-center text-xl"><i class="fa-solid fa-user-check"></i></div>
+      <p class="text-[10px] tracking-[.16em] uppercase font-bold text-[#b87955] mt-5">FEM-VOYAGE membership</p><h2 id="authTitle" class="text-3xl serif text-[#173d32] mt-1">Mulai perjalananmu.</h2><p class="text-xs text-[#7c867e] mt-2 leading-5">Buat akun demo untuk mencoba alur komunitas. Data tidak dikirim ke server.</p>
+      <div class="flex items-center gap-2 mt-6 mb-6"><span class="step-dot done" id="step1dot">1</span><div class="h-px bg-[#e2e6df] flex-1"></div><span class="step-dot" id="step2dot">2</span><div class="h-px bg-[#e2e6df] flex-1"></div><span class="step-dot" id="step3dot">3</span></div>
+      <div id="authStep1">
+        <label class="block text-xs font-bold text-[#526057] mb-2">Nama lengkap</label><input id="fullName" type="text" placeholder="Masukkan nama lengkap" class="w-full border border-[#dce1da] rounded-xl px-4 py-3 text-sm mb-4" />
+        <label class="block text-xs font-bold text-[#526057] mb-2">Email</label><input id="email" type="email" placeholder="nama@email.com" class="w-full border border-[#dce1da] rounded-xl px-4 py-3 text-sm mb-4" />
+        <label class="block text-xs font-bold text-[#526057] mb-2">Pernyataan identitas</label><select id="genderChoice" class="w-full border border-[#dce1da] rounded-xl px-4 py-3 text-sm mb-3"><option value="">Pilih salah satu</option><option value="female">Perempuan</option><option value="male">Laki-laki</option><option value="other">Memilih tidak menyebutkan</option></select>
+        <div class="rounded-xl bg-[#f7f7f3] p-3 text-[11px] leading-5 text-[#778078]"><i class="fa-solid fa-circle-info text-[#b87955] mr-1"></i> Komunitas trip ini ditujukan bagi perempuan. Untuk demo, kelayakan awal mengikuti pernyataan pengguna; verifikasi lanjutan dilakukan oleh admin komunitas, bukan analisis otomatis wajah.</div>
+        <p id="genderError" class="hidden text-xs text-red-600 mt-3"></p><button id="toStep2" class="btn-primary w-full rounded-xl py-3.5 text-sm font-bold mt-5">Lanjut verifikasi <i class="fa-solid fa-arrow-right ml-2"></i></button>
+      </div>
+      <div id="authStep2" class="hidden">
+        <h3 class="font-bold text-sm text-[#173d32]">Unggah foto diri</h3><p class="text-xs text-[#7c867e] mt-1 leading-5">Foto hanya untuk simulasi pengajuan verifikasi. Pada MVP ini foto tidak dianalisis dan tidak diunggah ke server.</p>
+        <label class="mt-5 border-2 border-dashed border-[#cfd8ce] rounded-2xl p-6 flex flex-col items-center text-center cursor-pointer hover:bg-[#f8f9f6]"><input id="selfieInput" type="file" accept="image/*" class="hidden"/><span class="w-12 h-12 rounded-2xl bg-[#eaf0e9] text-[#245342] grid place-items-center text-xl"><i class="fa-solid fa-camera"></i></span><span class="text-sm font-bold text-[#173d32] mt-3">Pilih foto dari perangkat</span><span class="text-[10px] text-[#89938b] mt-1">Format JPG, PNG, atau WEBP</span></label>
+        <div id="selfiePreviewWrap" class="hidden mt-4 flex items-center gap-4 bg-[#f7f7f3] rounded-xl p-3"><img id="selfiePreview" class="w-16 h-16 rounded-lg object-cover" alt="Pratinjau foto diri"/><div class="min-w-0"><p id="selfieFileName" class="text-xs font-bold truncate"></p><p class="text-[10px] text-[#89938b]">Pratinjau lokal di perangkat</p></div><button id="removeSelfie" class="ml-auto text-xs text-red-600">Hapus</button></div>
+        <div class="flex gap-2 mt-6"><button id="backStep1" class="btn-outline rounded-xl px-5 py-3 text-sm font-bold">Kembali</button><button id="submitVerification" class="btn-primary flex-1 rounded-xl py-3 text-sm font-bold">Kirim pengajuan <i class="fa-solid fa-arrow-right ml-2"></i></button></div>
+      </div>
+      <div id="authStep3" class="hidden text-center py-3"><div class="w-16 h-16 rounded-full bg-[#e9f2e9] text-[#245342] grid place-items-center text-2xl mx-auto"><i class="fa-solid fa-shield-heart"></i></div><h3 class="text-2xl serif text-[#173d32] mt-4">Pengajuan diterima!</h3><p class="text-xs text-[#7c867e] leading-6 mt-2">Status akun demo: <b>menunggu peninjauan admin</b>. Kamu dapat melanjutkan melihat trip dalam mode pratinjau.</p><button id="finishAuth" class="btn-primary w-full rounded-xl py-3.5 text-sm font-bold mt-6">Jelajahi trip</button></div>
+    </div>
+  </div>
+
+  <!-- Trip detail modal -->
+  <div id="detailModal" class="hidden fixed inset-0 z-50 modal-backdrop p-4 items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="detailTitle"><div class="modal-panel bg-white w-full max-w-lg rounded-[26px] p-6 sm:p-8 relative"><button class="close-modal absolute top-5 right-5 w-9 h-9 rounded-full bg-[#f1f2ed]" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button><p class="text-[10px] tracking-[.16em] uppercase font-bold text-[#b87955]">Trip details</p><h2 id="detailTitle" class="text-3xl serif text-[#173d32] mt-2">Nama trip</h2><div class="grid grid-cols-2 gap-3 mt-5"><div class="rounded-xl bg-[#f7f7f3] p-3"><p class="text-[10px] text-[#8a938b]">Durasi</p><p id="detailDuration" class="text-sm font-bold mt-1">2 hari 1 malam</p></div><div class="rounded-xl bg-[#f7f7f3] p-3"><p class="text-[10px] text-[#8a938b]">Harga per orang</p><p id="detailPrice" class="text-sm font-bold mt-1">Rp 850.000</p></div></div><p id="detailDescription" class="text-sm text-[#6f7b72] leading-6 mt-5"></p><div class="border-t border-[#eceee8] mt-5 pt-5 flex items-center justify-between"><span class="text-[10px] text-[#929a93]">Pemesanan simulasi</span><button id="bookTrip" class="btn-primary rounded-full px-5 py-3 text-xs font-bold">Pesan trip <i class="fa-solid fa-arrow-right ml-1"></i></button></div></div></div>
+
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-[70] space-y-2 w-[min(360px,calc(100vw-40px))]"></div>
+
+  <script>
+    // Demo data: no account, booking, verification, or location data is sent to a server.
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+    let currentTrip = null;
+    let watchId = null;
+    let currentPosition = null;
+    let selfieObjectUrl = null;
+
+    const tripData = {
+      'Sunrise & Sisterhood': { duration:'2 hari 1 malam', price:'Rp 850.000', description:'Perjalanan ke Bromo untuk menikmati sunrise, lautan pasir, dan waktu kebersamaan. Paket demo mencakup transportasi lokal, pemandu, dan dokumentasi kelompok.' },
+      'Ubud Bloom Retreat': { duration:'3 hari 2 malam', price:'Rp 1.450.000', description:'Retreat santai di Ubud dengan aktivitas wellness, workshop kreatif bersama pelaku lokal, dan waktu bebas untuk menikmati suasana Bali.' },
+      'Islands & Stories': { duration:'3 hari 2 malam', price:'Rp 2.250.000', description:'Jelajahi pulau-pulau sekitar Labuan Bajo, menikmati panorama laut, dan mengenal cerita serta produk komunitas lokal.' }
+    };
+
+    function toast(message, type='info') {
+      const el = document.createElement('div');
+      el.className = 'toast rounded-2xl px-4 py-3 shadow-xl text-sm flex items-start gap-3 ' + (type === 'error' ? 'bg-[#fff0ed] text-[#9d3829]' : 'bg-[#173d32] text-white');
+      el.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'} mt-0.5"></i><span>${message}</span>`;
+      $('#toastContainer').appendChild(el);
+      setTimeout(() => el.remove(), 3600);
+    }
+    function showModal(id) { const modal = document.getElementById(id); modal.classList.remove('hidden'); modal.classList.add('flex'); document.body.style.overflow='hidden'; }
+    function hideModal(id) { const modal = document.getElementById(id); modal.classList.add('hidden'); modal.classList.remove('flex'); if (!$$('.modal-backdrop:not(.hidden)').length) document.body.style.overflow=''; }
+    function openAuth() { resetAuth(); showModal('authModal'); }
+    function resetAuth() {
+      $('#authStep1').classList.remove('hidden'); $('#authStep2').classList.add('hidden'); $('#authStep3').classList.add('hidden');
+      $('#step1dot').classList.add('done'); $('#step2dot').classList.remove('done'); $('#step3dot').classList.remove('done'); $('#genderError').classList.add('hidden');
+      $('#fullName').value=''; $('#email').value=''; $('#genderChoice').value=''; removeSelfie();
+    }
+    function removeSelfie() { if (selfieObjectUrl) URL.revokeObjectURL(selfieObjectUrl); selfieObjectUrl=null; $('#selfieInput').value=''; $('#selfiePreviewWrap').classList.add('hidden'); }
+    function applyFilters() {
+      const region=$('#destinationFilter').value, date=$('#dateFilter').value;
+      let visible=0;
+      $$('#tripGrid article').forEach(card => { const okRegion=region==='all'||card.dataset.region===region; const okDate=date==='all'||card.dataset.date===date; const show=okRegion&&okDate; card.classList.toggle('hidden',!show); if(show) visible++; });
+      $('#noTrips').classList.toggle('hidden',visible!==0);
+      if (visible===0) toast('Belum ada trip untuk pilihan tersebut. Coba filter lain.');
+    }
+
+    // Header and calls to action
+    ['#joinNav','#heroJoin','#ctaJoin','#loginNav'].forEach(id => $(id).addEventListener('click',openAuth));
+    $('#mobileMenuBtn').addEventListener('click',()=>$('#mobileMenu').classList.toggle('hidden'));
+    $('#searchTrips').addEventListener('click',()=>{ applyFilters(); $('#trips').scrollIntoView({behavior:'smooth'}); });
+    $('#allTrips').addEventListener('click',()=>{ $('#destinationFilter').value='all'; $('#dateFilter').value='all'; $$('#tripGrid article').forEach(c=>c.classList.remove('hidden')); $('#noTrips').classList.add('hidden'); toast('Semua pilihan trip ditampilkan.'); });
+    $$('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{ $$('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const type=btn.dataset.filter; let n=0; $$('#tripGrid article').forEach(c=>{const show=type==='all'||c.dataset.category===type;c.classList.toggle('hidden',!show);if(show)n++;});$('#noTrips').classList.toggle('hidden',n!==0);}));
+    $$('.favorite').forEach(btn=>btn.addEventListener('click',()=>{const icon=btn.querySelector('i');const saved=icon.classList.contains('fa-solid');icon.classList.toggle('fa-solid',!saved);icon.classList.toggle('fa-regular',saved);icon.classList.toggle('text-[#c66d58]',!saved);toast(saved?'Trip dihapus dari daftar simpan.':'Trip disimpan ke daftar favorit.');}));
+    $$('.detail-btn').forEach(btn=>btn.addEventListener('click',()=>{const name=btn.dataset.trip;const data=tripData[name];currentTrip=name;$('#detailTitle').textContent=name;$('#detailDuration').textContent=data.duration;$('#detailPrice').textContent=data.price;$('#detailDescription').textContent=data.description;showModal('detailModal');}));
+    $('#bookTrip').addEventListener('click',()=>{hideModal('detailModal');toast(`Permintaan pemesanan demo untuk ${currentTrip} berhasil dibuat. Belum ada pembayaran sungguhan.`);});
+    $$('.close-modal').forEach(btn=>btn.addEventListener('click',()=>{hideModal('authModal');hideModal('detailModal');}));
+    $$('.modal-backdrop').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)hideModal(m.id);}));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideModal('authModal');hideModal('detailModal');}});
+
+    // Registration: a self-attestation + community-admin review flow, not face-based gender inference.
+    $('#toStep2').addEventListener('click',()=>{
+      const name=$('#fullName').value.trim(), email=$('#email').value.trim(), gender=$('#genderChoice').value;
+      if(!name||!email||!email.includes('@')||!gender){$('#genderError').textContent='Lengkapi nama, email yang valid, dan pernyataan identitas terlebih dahulu.';$('#genderError').classList.remove('hidden');return;}
+      if(gender!=='female'){$('#genderError').textContent='FEM-VOYAGE pada mockup ini merupakan komunitas trip khusus perempuan. Untuk pertanyaan akses atau verifikasi, silakan hubungi admin komunitas.';$('#genderError').classList.remove('hidden');return;}
+      $('#genderError').classList.add('hidden');$('#authStep1').classList.add('hidden');$('#authStep2').classList.remove('hidden');$('#step2dot').classList.add('done');
+    });
+    $('#backStep1').addEventListener('click',()=>{$('#authStep2').classList.add('hidden');$('#authStep1').classList.remove('hidden');$('#step2dot').classList.remove('done');});
+    $('#selfieInput').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;if(!file.type.startsWith('image/')){toast('Pilih file gambar yang valid.','error');return;}if(selfieObjectUrl)URL.revokeObjectURL(selfieObjectUrl);selfieObjectUrl=URL.createObjectURL(file);$('#selfiePreview').src=selfieObjectUrl;$('#selfieFileName').textContent=file.name;$('#selfiePreviewWrap').classList.remove('hidden');});
+    $('#removeSelfie').addEventListener('click',removeSelfie);
+    $('#submitVerification').addEventListener('click',()=>{if(!$('#selfieInput').files.length){toast('Pilih foto diri untuk melanjutkan simulasi.','error');return;}$('#authStep2').classList.add('hidden');$('#authStep3').classList.remove('hidden');$('#step3dot').classList.add('done');});
+    $('#finishAuth').addEventListener('click',()=>{hideModal('authModal');toast('Selamat datang di FEM-VOYAGE! Status akun: menunggu peninjauan admin.');});
+
+    // Optional geolocation. This only runs after an explicit click and can be stopped at any time.
+    function setTrackingUI(active) { $('#trackingBadge').textContent=active?'AKTIF':'NONAKTIF';$('#trackingBadge').className='text-[10px] font-bold rounded-full px-3 py-1.5 '+(active?'bg-[#e6f1e8] text-[#245342]':'bg-[#f0f1ec] text-[#78827a]');$('#startTracking').disabled=active;$('#stopTracking').disabled=!active;$('#shareLocation').disabled=!currentPosition;$('#mapPin').classList.toggle('animate-pulse',active);$('#mapStatus').textContent=active?'Lokasi sedang dibagikan':'Lokasi belum dibagikan'; }
+    $('#startTracking').addEventListener('click',()=>{
+      if(!('geolocation' in navigator)){toast('Browser ini tidak mendukung geolokasi.','error');return;}
+      if(!window.isSecureContext){toast('Akses GPS memerlukan HTTPS atau localhost.','error');return;}
+      $('#locationHint').textContent='Menunggu izin lokasi dari browser…';
+      watchId=navigator.geolocation.watchPosition(pos=>{currentPosition={latitude:pos.coords.latitude,longitude:pos.coords.longitude,accuracy:Math.round(pos.coords.accuracy)};$('#coordinates').textContent=`${currentPosition.latitude.toFixed(5)}, ${currentPosition.longitude.toFixed(5)}`;$('#locationHint').textContent=`Akurasi sekitar ${currentPosition.accuracy} meter · diperbarui ${new Date().toLocaleTimeString('id-ID')}`;setTrackingUI(true);},err=>{const messages={1:'Izin lokasi ditolak. Aktifkan izin lokasi di pengaturan browser.',2:'Lokasi perangkat tidak tersedia.',3:'Permintaan lokasi terlalu lama.'};$('#locationHint').textContent=messages[err.code]||'Lokasi tidak dapat diakses.';toast(messages[err.code]||'Tidak dapat mengambil lokasi.','error');if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;}setTrackingUI(false);},{enableHighAccuracy:true,maximumAge:5000,timeout:15000});
+      setTrackingUI(true);
+    });
+    $('#stopTracking').addEventListener('click',()=>{if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;setTrackingUI(false);$('#locationHint').textContent='Berbagi lokasi dihentikan oleh pengguna.';toast('Berbagi lokasi telah dihentikan.');});
+    $('#shareLocation').addEventListener('click',async()=>{if(!currentPosition)return;const message=`Lokasi saya (FEM-VOYAGE demo): https://maps.google.com/?q=${currentPosition.latitude},${currentPosition.longitude}`;try{if(navigator.share){await navigator.share({title:'Lokasi perjalanan saya',text:'Ini lokasi saya saat perjalanan.',url:`https://maps.google.com/?q=${currentPosition.latitude},${currentPosition.longitude}`});}else if(navigator.clipboard){await navigator.clipboard.writeText(message);toast('Tautan lokasi disalin. Kirim hanya kepada orang tepercaya.');}else{toast(message);}}catch(e){if(e.name!=='AbortError')toast('Lokasi siap dibagikan melalui tautan Google Maps.');}});
+    $('#openSafety').addEventListener('click',()=>$('#tracking').scrollIntoView({behavior:'smooth'}));
+
+    // Initial state
+    setTrackingUI(false);
+  </script>
+</body>
+</html>
