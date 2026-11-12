@@ -1,0 +1,15 @@
+{
+  "name": "fem-voyage-mvp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Front-end MVP FEM-VOYAGE - women's community open trip platform",
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
